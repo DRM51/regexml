@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::operation::{Operation, OperationControl, MATCHES_ZLS_AT_START};
 use crate::re_flags::ReFlags;
 use crate::re_matcher::ReMatcher;
@@ -36,5 +37,9 @@ impl OperationControl for Bol {
             return Box::new(std::iter::empty());
         }
         Box::new(std::iter::once(position))
+    }
+
+    fn to_node(&self) -> Node {
+        Node::LineStart
     }
 }

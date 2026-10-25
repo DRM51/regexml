@@ -1,5 +1,6 @@
 use icu_collections::codepointinvlist::CodePointInversionListBuilder;
 
+use crate::describe::Node;
 use crate::{
     character_class::CharacterClass,
     operation::{Operation, OperationControl, MATCHES_ZLS_NEVER},
@@ -93,6 +94,10 @@ impl OperationControl for Choice {
 
     fn children(&self) -> Vec<Operation> {
         self.branches.clone()
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Choice(self.branches.iter().map(|o| o.to_node()).collect())
     }
 }
 

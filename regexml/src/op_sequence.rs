@@ -1,5 +1,6 @@
 use icu_collections::codepointinvlist::CodePointInversionListBuilder;
 
+use crate::describe::Node;
 use crate::{
     character_class::CharacterClass,
     op_nothing::Nothing,
@@ -182,6 +183,10 @@ impl OperationControl for Sequence {
 
     fn children(&self) -> Vec<Operation> {
         self.operations.clone()
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Sequence(self.operations.iter().map(|o| o.to_node()).collect())
     }
 }
 

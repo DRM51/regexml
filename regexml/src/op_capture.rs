@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::{
     operation::{Operation, OperationControl},
     re_flags::ReFlags,
@@ -61,6 +62,13 @@ impl OperationControl for Capture {
 
     fn children(&self) -> Vec<Operation> {
         vec![self.child_op.as_ref().clone()]
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Capture {
+            group: self.group_nr,
+            node: Box::new(self.child_op.to_node()),
+        }
     }
 }
 

@@ -16,6 +16,7 @@ use crate::op_repeat::Repeat;
 use crate::op_sequence::Sequence;
 use crate::op_unambiguous_repeat::UnambiguousRepeat;
 
+use crate::describe::Node;
 use crate::re_flags::ReFlags;
 use crate::re_matcher::ReMatcher;
 
@@ -101,6 +102,18 @@ pub(crate) trait OperationControl {
     #[allow(dead_code)]
     fn children(&self) -> Vec<Operation> {
         Vec::new()
+    }
+
+    /// Describe this operation for [`crate::Regex::node`].
+    fn to_node(&self) -> Node;
+}
+
+/// The largest number of repetitions as a node gives it (`None`: no bound).
+pub(crate) fn node_max(max: usize) -> Option<usize> {
+    if max == usize::MAX {
+        None
+    } else {
+        Some(max)
     }
 }
 

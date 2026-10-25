@@ -1,3 +1,5 @@
+use crate::describe::{Node, RepeatKind};
+use crate::operation::node_max;
 use crate::{
     op_nothing::Nothing,
     operation::{Operation, OperationControl, RepeatOperation, MATCHES_ZLS_ANYWHERE},
@@ -108,6 +110,15 @@ impl OperationControl for GreedyFixed {
 
     fn children(&self) -> Vec<Operation> {
         vec![self.operation.as_ref().clone()]
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Repeat {
+            node: Box::new(self.operation.to_node()),
+            min: self.min,
+            max: node_max(self.max),
+            kind: RepeatKind::GreedyFixed,
+        }
     }
 }
 

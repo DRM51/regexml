@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::{
     operation::{Operation, OperationControl, MATCHES_ZLS_ANYWHERE},
     re_flags::ReFlags,
@@ -27,5 +28,9 @@ impl OperationControl for Nothing {
         position: usize,
     ) -> Box<dyn Iterator<Item = usize>> {
         Box::new(std::iter::once(position))
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Empty
     }
 }

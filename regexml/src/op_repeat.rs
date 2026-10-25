@@ -1,3 +1,5 @@
+use crate::describe::{Node, RepeatKind};
+use crate::operation::node_max;
 use crate::{
     character_class::CharacterClass,
     operation::{
@@ -139,6 +141,19 @@ impl OperationControl for Repeat {
 
     fn children(&self) -> Vec<Operation> {
         vec![self.operation.as_ref().clone()]
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Repeat {
+            node: Box::new(self.operation.to_node()),
+            min: self.min,
+            max: node_max(self.max),
+            kind: if self.greedy {
+                RepeatKind::Greedy
+            } else {
+                RepeatKind::Reluctant
+            },
+        }
     }
 }
 

@@ -1,6 +1,7 @@
 use icu_casemap::CaseMapCloser;
 use icu_collections::codepointinvlist::CodePointInversionListBuilder;
 
+use crate::describe::Node;
 use crate::{
     character_class::CharacterClass,
     operation::{Operation, OperationControl, MATCHES_ZLS_ANYWHERE, MATCHES_ZLS_NEVER},
@@ -84,6 +85,10 @@ impl OperationControl for Atom {
             }
         }
         Box::new(std::iter::once(position + self.len))
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Literal(self.atom.clone())
     }
 }
 

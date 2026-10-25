@@ -1,5 +1,7 @@
+use crate::describe::{Flags, Node};
 #[cfg(test)]
 use crate::operation::Operation;
+use crate::operation::OperationControl;
 use crate::re_compiler::ReCompiler;
 use crate::re_flags::Language;
 use crate::re_flags::ReFlags;
@@ -84,6 +86,31 @@ impl Regex {
             matcher: self.matcher(haystack),
             prev_end: Some(0),
         })
+    }
+
+    /// The compiled operations of this regular expression, after regexml's
+    /// rewrites and optimizations (see [`Node`]).
+    pub fn node(&self) -> Node {
+        self.re_program.operation.to_node()
+    }
+
+    /// The flags this regular expression was compiled with.
+    pub fn flags(&self) -> Flags {
+        self.re_program.flags.to_flags()
+    }
+
+    /// The number of capturing groups; `$1` to `$n` of a replacement string
+    /// refer to them. A group that regexml dropped (such as `(a){0}`) is
+    /// counted but never appears in [`Regex::node`].
+    pub fn capture_count(&self) -> usize {
+        self.re_program.max_parens.unwrap_or(1) - 1
+    }
+
+    /// Whether this regular expression matches the empty string, in which
+    /// case [`Regex::replace_all`], [`Regex::tokenize`] (of a non-empty
+    /// string) and [`Regex::analyze`] fail with [`Error::MatchesEmptyString`].
+    pub fn matches_empty_string(&self) -> bool {
+        self.matches_empty_string
     }
 
     pub(crate) fn matcher(&self, search: &str) -> ReMatcher {

@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::{
     character_class::CharacterClass,
     operation::{Operation, OperationControl, MATCHES_ZLS_NEVER},
@@ -46,5 +47,15 @@ impl OperationControl for CharClass {
         } else {
             Box::new(std::iter::empty())
         }
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Class(
+            self.character_class
+                .as_code_point_inversion_list()
+                .iter_ranges()
+                .map(|r| (*r.start(), *r.end()))
+                .collect(),
+        )
     }
 }

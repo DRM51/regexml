@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::{
     operation::{Operation, OperationControl, MATCHES_ZLS_AT_END},
     re_flags::ReFlags,
@@ -39,5 +40,9 @@ impl OperationControl for Eol {
         } else {
             Box::new(std::iter::empty())
         }
+    }
+
+    fn to_node(&self) -> Node {
+        Node::LineEnd
     }
 }

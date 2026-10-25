@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::{
     operation::{Operation, OperationControl, MATCHES_ZLS_ANYWHERE},
     re_flags::ReFlags,
@@ -38,5 +39,9 @@ impl OperationControl for EndProgram {
             matcher.set_paren_end(0, position);
             Box::new(std::iter::once(position))
         }
+    }
+
+    fn to_node(&self) -> Node {
+        Node::End
     }
 }

@@ -1,3 +1,4 @@
+use crate::describe::Node;
 use crate::{
     operation::{Operation, OperationControl},
     re_flags::ReFlags,
@@ -71,5 +72,9 @@ impl OperationControl for BackReference {
             // We don't know the backref yet
             Box::new(std::iter::empty())
         }
+    }
+
+    fn to_node(&self) -> Node {
+        Node::BackReference(self.group_nr)
     }
 }

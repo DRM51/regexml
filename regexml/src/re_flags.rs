@@ -1,3 +1,4 @@
+use crate::describe::Flags;
 use crate::re_compiler::Error;
 
 /// Regular expressions can be compiled for XSD, or following
@@ -113,6 +114,16 @@ impl ReFlags {
 
     pub(crate) fn language(&self) -> Language {
         self.language
+    }
+
+    pub(crate) fn to_flags(&self) -> Flags {
+        Flags {
+            case_insensitive: self.case_independent,
+            multi_line: self.multi_line,
+            dot_all: self.single_line,
+            ignore_whitespace: self.allow_whitespace,
+            literal: self.literal,
+        }
     }
 
     // This appears to do nothing in the Java original; it's triggered

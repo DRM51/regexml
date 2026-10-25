@@ -1,3 +1,5 @@
+use crate::describe::{Node, RepeatKind};
+use crate::operation::node_max;
 use crate::{
     operation::{Operation, OperationControl, RepeatOperation, MATCHES_ZLS_ANYWHERE},
     re_flags::ReFlags,
@@ -94,6 +96,15 @@ impl OperationControl for UnambiguousRepeat {
 
     fn children(&self) -> Vec<Operation> {
         vec![self.operation.as_ref().clone()]
+    }
+
+    fn to_node(&self) -> Node {
+        Node::Repeat {
+            node: Box::new(self.operation.to_node()),
+            min: self.min,
+            max: node_max(self.max),
+            kind: RepeatKind::Unambiguous,
+        }
     }
 }
 
