@@ -133,6 +133,16 @@ impl Regex {
         ))
     }
 
+    /// Analyze an input string like [`Regex::analyze`], also when this
+    /// regular expression matches the empty string, as XSLT's
+    /// `xsl:analyze-string` allows. After a zero-length match the search
+    /// goes on from the next character, so the string `axb` analyzed with
+    /// `x*` gives a match of `""`, a non-match `a`, the matches `x` and `""`,
+    /// a non-match `b` and a match `""`.
+    pub fn analyze_xslt<'a>(&'a self, haystack: &str) -> AnalyzeIter<'a> {
+        AnalyzeIter::new(&self.re_program.pattern, self.matcher(haystack))
+    }
+
     // TODO: continue translating ARegexIterator
     // this also has an isMatching protocol, and a processMatchingSubstring story
     // and a computeNestingTable story too. Need to read more into how this is

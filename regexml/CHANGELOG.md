@@ -15,6 +15,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   way, and leave the other patterns to regexml.
 - `Regex::flags` (`Flags`), `Regex::capture_count` and
   `Regex::matches_empty_string`.
+- `Regex::analyze_xslt`: the analysis of `Regex::analyze` also for a regular
+  expression that matches the empty string, as XSLT's `xsl:analyze-string`
+  allows.
 
 ## [0.2.2](https://github.com/Paligo/regexml/compare/regexml-v0.2.1...regexml-v0.2.2) - 2026-04-28
 
