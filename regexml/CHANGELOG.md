@@ -19,6 +19,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   expression that matches the empty string, as XSLT's `xsl:analyze-string`
   allows.
 
+### Fixed
+
+- A reluctant repetition of an operation whose matches vary in length (such as
+  `(?:ab|c)+?`) no longer loops forever when the operation does not match
+  before its least number of repetitions; it now stops as soon as the
+  operation does not match, as Saxon's does.
+
 ## [0.2.2](https://github.com/Paligo/regexml/compare/regexml-v0.2.1...regexml-v0.2.2) - 2026-04-28
 
 ### Fixed

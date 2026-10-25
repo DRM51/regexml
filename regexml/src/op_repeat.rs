@@ -281,16 +281,18 @@ impl Iterator for ReluctantRepeatIterator<'_> {
     type Item = usize;
 
     fn next(&mut self) -> Option<Self::Item> {
+        // As Saxon's iterator: one more repetition at each step; no
+        // repetition only when the operation does not match where the
+        // repetition starts; the end as soon as the operation does not match.
         loop {
-            if let Some(position) = self.position {
-                let mut it = self.operation.matches_iter(self.matcher, position);
-                if let Some(position) = it.next() {
-                    self.counter += 1;
-                    if self.counter > self.max {
-                        self.position = None;
-                    } else {
-                        self.position = Some(position);
-                    }
+            let position = self.position?;
+            let mut it = self.operation.matches_iter(self.matcher, position);
+            if let Some(next) = it.next() {
+                self.counter += 1;
+                if self.counter > self.max {
+                    self.position = None;
+                } else {
+                    self.position = Some(next);
                 }
             } else if self.min == 0 && self.counter == 0 {
                 self.counter += 1;
@@ -298,10 +300,9 @@ impl Iterator for ReluctantRepeatIterator<'_> {
                 self.position = None;
             }
             if self.counter >= self.min || self.position.is_none() {
-                break;
+                return self.position;
             }
         }
-        self.position
     }
 }
 
